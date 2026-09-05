@@ -20,8 +20,8 @@
     <div class="app">
       <header class="topbar">
         <div class="brand">
-          <span class="brand__prompt" aria-hidden="true">~/labbook</span>
           <span class="brand__name">App in panne</span>
+          <span class="brand__version" id="app-version">v0.1.1</span>
         </div>
         <div id="timer" class="timer" hidden aria-live="polite">05:00</div>
       </header>
@@ -48,6 +48,7 @@
             <div id="progress-dots" class="dots" aria-hidden="true"></div>
           </div>
           <article class="card">
+            <img id="station-art" class="station-art" alt="" hidden />
             <h2 id="station-title">Titolo</h2>
             <p id="station-context" class="context"></p>
             <div id="station-body"></div>

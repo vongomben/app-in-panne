@@ -1,4 +1,5 @@
 (function () {
+  const APP_VERSION = "0.1.1";
   const DURATION_MS = 5 * 60 * 1000;
   const stations = window.STATIONS;
   const storage = window.GameStorage;
@@ -13,6 +14,7 @@
     btnReplay: document.getElementById("btn-replay"),
     timer: document.getElementById("timer"),
     dots: document.getElementById("progress-dots"),
+    stationArt: document.getElementById("station-art"),
     stationTitle: document.getElementById("station-title"),
     stationIndex: document.getElementById("station-index"),
     stationContext: document.getElementById("station-context"),
@@ -41,7 +43,35 @@
       startedAt: null,
       finishedAt: null,
       outcome: null,
+      order: {},
     };
+  }
+
+  function shuffle(list) {
+    const copy = list.slice();
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function idsFor(station) {
+    if (!state.order) state.order = {};
+    if (!state.order[station.id]) {
+      let ids = shuffle(station.options.map((o) => o.id));
+      if (station.type === "reorder" && ids.join() === station.correct.join() && ids.length > 1) {
+        [ids[0], ids[ids.length - 1]] = [ids[ids.length - 1], ids[0]];
+      }
+      state.order[station.id] = ids;
+      persist();
+    }
+    return state.order[station.id];
+  }
+
+  function optionsInOrder(station) {
+    const byId = Object.fromEntries(station.options.map((o) => [o.id, o]));
+    return idsFor(station).map((id) => byId[id]);
   }
 
   function persist() {
@@ -100,12 +130,13 @@
   function renderChoice(station) {
     const list = document.createElement("div");
     list.className = "choices";
-    station.options.forEach((opt) => {
+    const letters = ["A", "B", "C", "D", "E", "F"];
+    optionsInOrder(station).forEach((opt, i) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "choice";
       btn.dataset.id = opt.id;
-      btn.innerHTML = `<span class="choice__id">${opt.id}</span><span>${opt.text}</span>`;
+      btn.innerHTML = `<span class="choice__id">${letters[i]}</span><span>${opt.text}</span>`;
       btn.addEventListener("click", () => {
         list.querySelectorAll(".choice").forEach((b) => b.classList.remove("is-selected"));
         btn.classList.add("is-selected");
@@ -130,7 +161,7 @@
     hint.textContent = "Tocca un dato, poi tocca la colonna. Oppure trascinalo.";
     pieces.appendChild(hint);
 
-    station.options.forEach((opt) => {
+    optionsInOrder(station).forEach((opt) => {
       const chip = document.createElement("button");
       chip.type = "button";
       chip.className = "chip";
@@ -193,7 +224,7 @@
   }
 
   function renderReorder(station) {
-    orderIds = station.options.map((o) => o.id);
+    orderIds = idsFor(station).slice();
     const list = document.createElement("ol");
     list.className = "reorder";
 
@@ -232,6 +263,14 @@
     const station = currentStation();
     if (!station) return;
     el.stationIndex.textContent = `Stazione ${state.stationIndex + 1} di ${stations.length}`;
+    if (station.image) {
+      el.stationArt.hidden = false;
+      el.stationArt.src = station.image;
+      el.stationArt.alt = station.imageAlt || "";
+    } else {
+      el.stationArt.hidden = true;
+      el.stationArt.removeAttribute("src");
+    }
     el.stationTitle.textContent = station.title;
     el.stationContext.textContent = station.context;
     el.stationBody.innerHTML = "";
@@ -384,6 +423,9 @@
   }
 
   function boot() {
+    const ver = document.getElementById("app-version");
+    if (ver) ver.textContent = `v${APP_VERSION}`;
+
     const saved = storage.load();
     state = saved && saved.screen ? saved : defaultState();
 

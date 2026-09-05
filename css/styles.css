@@ -62,15 +62,32 @@ body {
   gap: 0.1rem;
 }
 
-.brand__prompt {
+.brand__name {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.brand__version {
   font-family: var(--mono);
   font-size: 0.75rem;
   color: #9db0c9;
 }
 
-.brand__name {
-  font-weight: 700;
-  letter-spacing: 0.01em;
+.station-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0.75rem 0.75rem 0 0;
+  margin: -1.2rem -1.15rem 1rem;
+}
+
+@media (min-width: 720px) {
+  .station-art {
+    margin: -1.5rem -1.5rem 1.1rem;
+  }
 }
 
 .timer {

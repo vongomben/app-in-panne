@@ -29,4 +29,9 @@ Poi apri l’URL stampato (di solito `http://localhost:3000`).
 
 `onGameComplete` riceve `{ outcome, stationsCompleted, elapsedSeconds, remainingSeconds, startedAt, finishedAt }`. Oggi logga in console. Domani si può mandare a PocketBase da quella sola funzione.
 
+Versione corrente: `v0.1.1` (costante `APP_VERSION` in `js/app.js`).
+
+Header immagine per stazione (opzionale): campo `image` in `stations.js`.
+Misura consigliata **1200 × 400 px** (3:1), oppure 1800 × 600 per schermi densi. WebP/JPG, 80–150 KB.
+
 Il progresso sta in `localStorage` (`app-in-panne-v1`).

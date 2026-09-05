@@ -1,6 +1,12 @@
 /**
  * Contenuti delle 5 stazioni — App in panne
  * (niente stazione AI/copilota: il gioco si ferma al deploy)
+ *
+ * Header grafico opzionale per stazione:
+ *   image: "img/stations/frontend.webp"
+ *   imageAlt: "Pulsante Prenota su uno schermo"
+ * Misura: 1200 × 400 px (rapporto 3:1). Su retina va bene anche 1800 × 600.
+ * Formato: WebP o JPG, 80–150 KB. Soggetto al centro, niente testo piccolo.
  */
 window.STATIONS = [
   {
