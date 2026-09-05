@@ -1,5 +1,5 @@
 (function () {
-  const APP_VERSION = "0.1.2";
+  const APP_VERSION = "0.1.3";
   const DURATION_MS = 5 * 60 * 1000;
   const stations = window.STATIONS;
   const storage = window.GameStorage;
@@ -10,6 +10,8 @@
     end: document.getElementById("screen-end"),
     btnStart: document.getElementById("btn-start"),
     btnResume: document.getElementById("btn-resume"),
+    btnLast: document.getElementById("btn-last"),
+    lastResult: document.getElementById("last-result"),
     btnRestart: document.getElementById("btn-restart"),
     btnReplay: document.getElementById("btn-replay"),
     timer: document.getElementById("timer"),
@@ -422,6 +424,33 @@
     startTick();
   }
 
+  function showLastEnd() {
+    renderEnd();
+    showScreen("end");
+  }
+
+  function paintStart() {
+    const canResume =
+      state.screen === "play" &&
+      state.endsAt &&
+      Date.now() < state.endsAt &&
+      state.completed.length < stations.length;
+    const hasEnd = state.outcome === "success" || state.outcome === "timeout";
+
+    el.btnResume.hidden = !canResume;
+    el.btnLast.hidden = !hasEnd;
+    if (hasEnd && el.lastResult) {
+      el.lastResult.hidden = false;
+      el.lastResult.textContent =
+        state.outcome === "success"
+          ? "Ultimo turno: deploy completato. Puoi ricominciare o rivedere l’esito."
+          : "Ultimo turno: tempo scaduto. Puoi riprovare o rivedere l’esito.";
+    } else if (el.lastResult) {
+      el.lastResult.hidden = true;
+    }
+    showScreen("start");
+  }
+
   function boot() {
     const ver = document.getElementById("app-version");
     if (ver) ver.textContent = `v${APP_VERSION}`;
@@ -429,28 +458,18 @@
     const saved = storage.load();
     state = saved && saved.screen ? saved : defaultState();
 
-    const canResume =
-      state.screen === "play" &&
-      state.endsAt &&
-      Date.now() < state.endsAt &&
-      state.completed.length < stations.length;
-
-    if (state.screen === "end") {
-      renderEnd();
-      showScreen("end");
-      return;
+    if (state.screen === "play" && state.endsAt && Date.now() >= state.endsAt && !state.outcome) {
+      state.outcome = "timeout";
+      state.screen = "end";
+      state.finishedAt = Date.now();
+      persist();
     }
 
-    if (state.screen === "play" && state.endsAt && Date.now() >= state.endsAt) {
-      finish("timeout");
-      return;
-    }
-
-    showScreen("start");
-    el.btnResume.hidden = !canResume;
+    paintStart();
 
     el.btnStart.addEventListener("click", startFresh);
     el.btnResume.addEventListener("click", resume);
+    el.btnLast.addEventListener("click", showLastEnd);
     el.btnRestart.addEventListener("click", startFresh);
     el.btnReplay.addEventListener("click", startFresh);
     el.btnCheck.addEventListener("click", checkAnswer);
