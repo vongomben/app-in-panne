@@ -1,5 +1,5 @@
 (function () {
-  const APP_VERSION = "0.1.1";
+  const APP_VERSION = "0.1.2";
   const DURATION_MS = 5 * 60 * 1000;
   const stations = window.STATIONS;
   const storage = window.GameStorage;

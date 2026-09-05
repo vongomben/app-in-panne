@@ -3,8 +3,8 @@
  * (niente stazione AI/copilota: il gioco si ferma al deploy)
  *
  * Header grafico opzionale per stazione:
- *   image: "img/stations/frontend.webp"
- *   imageAlt: "Pulsante Prenota su uno schermo"
+ *   image: "asset/frontend.jpg"
+ *   imageAlt: "Pulsante Prenota su un tablet"
  * Misura: 1200 × 400 px (rapporto 3:1). Su retina va bene anche 1800 × 600.
  * Formato: WebP o JPG, 80–150 KB. Soggetto al centro, niente testo piccolo.
  */
@@ -12,6 +12,8 @@ window.STATIONS = [
   {
     id: "frontend",
     title: "Riparare il front-end",
+    image: "asset/frontend.jpg",
+    imageAlt: "Tablet con il pulsante Prenota e un collegamento spezzato",
     context:
       "Il pulsante Prenota si vede benissimo, ma se lo tocchi non succede niente. L’interfaccia è ferma: manca il collegamento tra il click e quello che dovrebbe fare l’app.",
     type: "choice",
@@ -30,6 +32,8 @@ window.STATIONS = [
   {
     id: "backend",
     title: "Collegare il back-end",
+    image: "asset/backend.jpg",
+    imageAlt: "Messaggio inviato dallo schermo che non arriva al server",
     context:
       "Ora il pulsante risponde: a schermo compare «prenotazione inviata». Però il server non tiene nulla. Manca la porta giusta verso il back-end, cioè la parte invisibile che applica le regole e salva i dati.",
     type: "choice",
@@ -48,6 +52,8 @@ window.STATIONS = [
   {
     id: "database",
     title: "Salvare i dati",
+    image: "asset/database.jpg",
+    imageAlt: "Schede da mettere nelle colonne di una tabella",
     context:
       "Il server è pronto, ma i dati sono in disordine. Trascina ogni informazione nella colonna giusta della tabella prenotazioni. Così poi si può cercare, filtrare e non mescolare i campi.",
     type: "match",
@@ -71,6 +77,8 @@ window.STATIONS = [
   {
     id: "sicurezza",
     title: "Bug di sicurezza",
+    image: "asset/sicurezza.jpg",
+    imageAlt: "Uno scudo ferma un testo sospetto nel campo nome",
     context:
       "Qualcuno ha scritto nel campo Nome una riga strana, che sembra codice e non un cognome. Se la salvi così com’è, l’app potrebbe fare cose non previste. Cosa fai?",
     type: "choice",
@@ -89,6 +97,8 @@ window.STATIONS = [
   {
     id: "deploy",
     title: "Preparare il deploy",
+    image: "asset/deploy.jpg",
+    imageAlt: "Tre passi: prova, pacchetto, pubblicazione sul cloud",
     context:
       "In locale l’app funziona. Per farla usare agli studenti deve andare online. Metti i tre passi nell’ordine in cui li farebbe un team prima di pubblicare.",
     type: "reorder",
