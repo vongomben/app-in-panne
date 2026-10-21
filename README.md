@@ -27,9 +27,11 @@ Poi apri l’URL stampato (di solito `http://localhost:3000`).
 
 ## Fine partita
 
-`onGameComplete` riceve `{ outcome, stationsCompleted, elapsedSeconds, remainingSeconds, startedAt, finishedAt }`. Oggi logga in console. Domani si può mandare a PocketBase da quella sola funzione.
+La schermata finale mostra da 1 a 5 stelle in base agli errori (0 → 5, 1 → 4, 2–3 → 3, 4–5 → 2, 6+ → 1). A tempo scaduto le stelle non superano le stazioni risolte.
 
-Versione corrente: `v0.1.5` (costante `APP_VERSION` in `js/app.js`).
+`onGameComplete` riceve `{ outcome, stationsCompleted, mistakes, stars, elapsedSeconds, remainingSeconds, startedAt, finishedAt }`. Oggi logga in console. Domani si può mandare a PocketBase da quella sola funzione.
+
+Versione corrente: `v0.1.6` (costante `APP_VERSION` in `js/app.js`).
 
 Header immagine per stazione (opzionale): campo `image` in `stations.js`.
 Misura consigliata **1200 × 400 px** (3:1), oppure 1800 × 600 per schermi densi. WebP/JPG, 80–150 KB.
